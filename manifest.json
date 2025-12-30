@@ -26,7 +26,7 @@
     }
   ],
   "options_ui": {
-    "page": "code.html",
+    "page": "options.html",
     "open_in_tab": true
   },
   "icons": {
@@ -40,7 +40,8 @@
         "sidebar.html",
         "sidebar.css",
         "sidebar.js",
-        "code.html",
+        "options.html",
+        "options.js",
         "icons/*"
       ],
       "matches": ["<all_urls>"]
