@@ -1,0 +1,20 @@
+//sidebar.css
+body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; height: 100vh; background-color: #f4f6f8; }
+.header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: white; border-bottom: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.title { font-weight: bold; color: #4a90e2; font-size: 16px; }
+.actions button { border: none; background: none; cursor: pointer; font-size: 16px; padding: 5px; }
+.actions button:hover { background-color: #f0f0f0; border-radius: 5px; }
+
+.chat-area { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+.message { max-width: 85%; padding: 10px 14px; border-radius: 12px; font-size: 14px; line-height: 1.5; word-wrap: break-word; }
+.message.user { align-self: flex-end; background-color: #4a90e2; color: white; border-bottom-right-radius: 2px; }
+.message.ai { align-self: flex-start; background-color: white; color: #333; border: 1px solid #e1e1e1; border-bottom-left-radius: 2px; }
+
+.input-area { padding: 10px; background: white; border-top: 1px solid #ddd; }
+textarea { width: 100%; height: 60px; border: 1px solid #ccc; border-radius: 8px; padding: 8px; font-family: inherit; resize: none; box-sizing: border-box; }
+textarea:focus { outline: none; border-color: #4a90e2; }
+.toolbar { display: flex; justify-content: space-between; margin-top: 8px; align-items: center; }
+select { padding: 5px; border-radius: 5px; border: 1px solid #ccc; }
+button#btn-send { background-color: #4a90e2; color: white; border: none; padding: 6px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+button#btn-send:hover { background-color: #357abd; }
+button#btn-ocr { background: #eee; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; }
