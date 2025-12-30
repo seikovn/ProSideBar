@@ -1,126 +1,42 @@
-//sidebar.js
-const chatContainer = document.getElementById('chat-container');
-const userInput = document.getElementById('user-input');
-const btnSend = document.getElementById('btn-send');
-const btnClose = document.getElementById('btn-close');
-const btnSettings = document.getElementById('btn-settings');
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProSidebar</title>
+  <link rel="stylesheet" href="sidebar.css">
+</head>
+<body>
+  <div class="header">
+    <div class="title">✨ ProSider AI</div>
+    <div class="actions">
+      <button id="btn-settings" title="Cài đặt API Key">⚙️</button>
+      <button id="btn-close" title="Thu nhỏ">✖</button>
+    </div>
+  </div>
 
-// Thêm tin nhắn vào khung chat
-function addMessage(text, sender) {
-  const div = document.createElement('div');
-  div.className = `message ${sender}`;
-  div.innerHTML = text.replace(/\n/g, '<br>');
-  chatContainer.appendChild(div);
-  chatContainer.scrollTop = chatContainer.scrollHeight;
-}
+  <div class="chat-area" id="chat-container">
+    <div class="message ai">
+      Chào cháu! Chú là trợ lý Google Gemini.<br>
+      - Bôi đen văn bản để Dịch.<br>
+      - Hoặc bấm nút <b>"Tóm tắt"</b> bên dưới để đọc nhanh cả bài!
+    </div>
+  </div>
 
-// 🕵️‍♂️ HÀM THÁM TỬ: Tự tìm tên model đúng nhất
-async function findBestModel(apiKey) {
-  try {
-    // Hỏi Google: "Có những model nào?"
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
-    const json = await res.json();
+  <div class="input-area">
+    <div style="font-size: 12px; color: green; margin-bottom: 5px; font-weight: bold;">
+      ✅ Đang dùng: Google Gemini (Miễn phí)
+    </div>
     
-    if (json.error) {
-      throw new Error(json.error.message);
-    }
+    <textarea id="user-input" placeholder="Nhập câu hỏi hoặc yêu cầu..."></textarea>
     
-    if (!json.models || json.models.length === 0) {
-      throw new Error("Tài khoản này không có quyền truy cập model nào cả.");
-    }
+    <div class="toolbar">
+      <button id="btn-summarize" style="background-color: #9013fe; margin-right: auto;">📝 Tóm tắt</button>
+      
+      <button id="btn-send">Gửi ➢</button>
+    </div>
+  </div>
 
-    // Tìm con Robot nào biết "tạo nội dung" (generateContent)
-    const goodModel = json.models.find(m => 
-      m.supportedGenerationMethods && m.supportedGenerationMethods.includes("generateContent")
-    );
-
-    if (goodModel) {
-      // Ví dụ nó tìm thấy "models/gemini-1.5-flash-001"
-      // Chúng ta phải xóa chữ "models/" ở đầu đi để dùng
-      return goodModel.name.replace("models/", "");
-    }
-    
-    // Nếu không tìm thấy cái nào ưng ý, dùng tạm cái phổ biến nhất
-    return "gemini-1.5-flash";
-    
-  } catch (err) {
-    console.error("Lỗi tìm model:", err);
-    // Nếu lỗi quá thì đoán mò
-    return "gemini-1.5-flash";
-  }
-}
-
-// Hàm gọi AI chính
-async function callAI(prompt) {
-  addMessage("Đang dò tìm Robot phù hợp... 🕵️", 'ai');
-  const loadingMsg = chatContainer.lastElementChild;
-  
-  const data = await chrome.storage.local.get('apiKeys');
-  const keys = data.apiKeys || {};
-  const googleKey = (keys.google || '').trim();
-
-  try {
-    if (!googleKey) {
-      throw new Error("Cháu chưa nhập API Key! Hãy bấm nút bánh răng ⚙️ để nhập.");
-    }
-
-    // Bước 1: Tìm tên Robot chính xác
-    const modelName = await findBestModel(googleKey);
-    console.log("Đã tìm thấy model:", modelName); // Xem ở Console nếu cần
-    
-    loadingMsg.innerHTML = `Đang kết nối với <b>${modelName}</b>...`;
-
-    // Bước 2: Gọi Robot đó trả lời
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${googleKey}`;
-    
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-    });
-
-    const json = await res.json();
-
-    if (json.error) {
-      throw new Error(json.error.message);
-    }
-
-    const reply = json.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!reply) throw new Error("AI không trả lời (Lỗi lạ).");
-    
-    loadingMsg.innerHTML = reply.replace(/\n/g, '<br>');
-
-  } catch (err) {
-    // Dịch lỗi sang tiếng Việt cho dễ hiểu
-    let msg = err.message;
-    if (msg.includes("API key not valid")) msg = "API Key bị sai. Cháu kiểm tra lại xem có copy thiếu chữ không?";
-    if (msg.includes("quota")) msg = "Hết lượt dùng miễn phí rồi.";
-    
-    loadingMsg.innerHTML = `<span style="color: red; font-weight: bold;">❌ LỖI: ${msg}</span>`;
-  }
-}
-
-// Các nút bấm
-btnSend.addEventListener('click', () => {
-  const text = userInput.value.trim();
-  if (!text) return;
-  addMessage(text, 'user');
-  userInput.value = '';
-  callAI(text);
-});
-
-btnClose.addEventListener('click', () => {
-  window.parent.postMessage({ type: 'CLOSE_SIDEBAR' }, '*');
-});
-
-btnSettings.addEventListener('click', () => {
-  chrome.runtime.sendMessage({ type: 'openOptions' });
-});
-
-window.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'AUTO_PROMPT') {
-    const prompt = event.data.text;
-    addMessage(prompt, 'user');
-    callAI(prompt);
-  }
-});
+  <script src="sidebar.js"></script>
+</body>
+</html>
