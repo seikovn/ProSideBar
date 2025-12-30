@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Pro Side AI",
+  "name": "Pro Sider AI",
   "description": "Right-side AI assistant with multiple models, OCR, PDF chat and interaction history.",
   "version": "0.1.0",
   "permissions": [
