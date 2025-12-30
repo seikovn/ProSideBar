@@ -14,10 +14,13 @@ Hướng dẫn cài đặt (local, unpacked):
 4. Truy cập một trang web bất kì; extension sẽ inject sidebar bên phải.
 
 Lưu ý triển khai:
-- Các hàm gọi API (sendToAI) là placeholder. Bạn phải triển khai cách gọi tới OpenAI/Anthropic/Google... và lưu API keys trong Options.
-- Bảo mật: lưu API keys chỉ trong chrome.storage. Tránh gọi trực tiếp từ content script nếu bạn không muốn lộ key; cân nhắc proxy server.
+- Các hàm gọi API (sendToAI) nay đã được triển khai cơ bản cho OpenAI, Anthropic, và Google Gemini. Bạn có thể mở rộng cho custom tools.
+- Bảo mật: lưu API keys chỉ trong chrome.storage. Tránh gọi trực tiếp từ content script nếu bạn không muốn lộ key; cân nhắc proxy server nếu cần.
 - OCR: sử dụng Tesseract.js (đã thêm CDN). Nếu muốn giảm kích thước, có thể xử lý trên server.
 - PDF: sử dụng pdf.js (CDN).
+- Đã sửa btnClose để collapse sidebar thành logo nhỏ thay vì remove iframe hoàn toàn.
+- Thêm crop logic cho capture region OCR.
+- Đã tách options.html và options.js đúng cách.
 
 Storage schema (gợi ý):
 - aiTools: [{id, name, enabled}, ...]
@@ -25,6 +28,7 @@ Storage schema (gợi ý):
 - proSideHistory: [{t:timestamp, tool, prompt, response}, ...]
 
 Tiếp theo bạn có thể:
-- Triển khai hàm sendToAI cho từng provider (OpenAI Chat Completions / HTTP to Anthropic / Google Vertex AI / Deepseek).
+- Thêm hỗ trợ cho các models khác (e.g., Deepseek).
 - Thêm UI để hiển thị token usage, costs, trạng thái kết nối.
 - Thêm authentication flow (OAuth) nếu muốn (vd. Google).
+- Cải thiện crop UI (thêm resize handles, etc.).
