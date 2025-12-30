@@ -1,32 +1,28 @@
 ```markdown
-# Pro Side AI - Chrome Extension (scaffold)
+# ProSide-AI - Chrome Extension (full scaffold)
 
-Mục tiêu: một assistant xuất hiện dạng cửa sổ bên phải (sidebar/floating iframe) có:
-- Chọn công cụ AI (ChatGPT, Gemini, Claude, ...)
-- Quản lý API keys (trên trang Options)
-- Lưu lịch sử tương tác
-- OCR: upload ảnh hoặc chụp vùng màn hình
-- Chat với PDF: upload PDF -> trích xuất text -> hỏi AI
+Files in this package:
+- manifest.json
+- inject.js
+- background.js
+- sidebar.html
+- sidebar.css
+- sidebar.js
+- code.html (Options page / Admin UI)
+- README.md
+- icons/icon16.png, icons/icon48.png, icons/icon128.png (please add)
 
-Hướng dẫn cài đặt (local, unpacked):
-1. Mở Chrome > chrome://extensions/
-2. Bật "Developer mode".
-3. "Load unpacked" -> chọn thư mục chứa các file ở trên.
-4. Truy cập một trang web bất kì; extension sẽ inject sidebar bên phải.
+Quick start (local):
+1. Download/clone this folder to your computer.
+2. Make sure icons/ contains icon16.png, icon48.png, icon128.png.
+3. Open Chrome → chrome://extensions/ → enable "Developer mode".
+4. Click "Load unpacked" and select the folder containing these files.
+5. Open any page and you should see the sidebar injected on the right.
+6. Click the settings button in the sidebar (⚙️) to open the full management UI (code.html).
 
-Lưu ý triển khai:
-- Các hàm gọi API (sendToAI) là placeholder. Bạn phải triển khai cách gọi tới OpenAI/Anthropic/Google... và lưu API keys trong Options.
-- Bảo mật: lưu API keys chỉ trong chrome.storage. Tránh gọi trực tiếp từ content script nếu bạn không muốn lộ key; cân nhắc proxy server.
-- OCR: sử dụng Tesseract.js (đã thêm CDN). Nếu muốn giảm kích thước, có thể xử lý trên server.
-- PDF: sử dụng pdf.js (CDN).
-
-Storage schema (gợi ý):
-- aiTools: [{id, name, enabled}, ...]
-- apiKeys: { openai: "...", google: "...", anthropic: "..." }
-- proSideHistory: [{t:timestamp, tool, prompt, response}, ...]
-
-Tiếp theo bạn có thể:
-- Triển khai hàm sendToAI cho từng provider (OpenAI Chat Completions / HTTP to Anthropic / Google Vertex AI / Deepseek).
-- Thêm UI để hiển thị token usage, costs, trạng thái kết nối.
-- Thêm authentication flow (OAuth) nếu muốn (vd. Google).
+Notes:
+- The Options page is `code.html` (the UI you provided). It is connected in manifest.json as the options page.
+- sendToAI in sidebar.js uses OpenAI when the tool selected is `openai`. You must add your OpenAI API key in storage via the options UI (not fully wired in the admin UI).
+- OCR uses Tesseract.js via CDN. PDF text extraction uses pdf.js via CDN.
+- For production usage, do not store secret keys in client-side extension files. Use a secure server/proxy to hide API keys.
 ```
