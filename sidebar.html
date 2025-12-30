@@ -1,0 +1,40 @@
+//sidebar.html
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProSidebar</title>
+  <link rel="stylesheet" href="sidebar.css">
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
+</head>
+<body>
+  <div class="header">
+    <div class="title">✨ ProSider AI</div>
+    <div class="actions">
+      <button id="btn-settings" title="Cài đặt API Key">⚙️</button>
+      <button id="btn-close" title="Thu nhỏ">✖</button>
+    </div>
+  </div>
+
+  <div class="chat-area" id="chat-container">
+    <div class="message ai">Chào cháu! Chú là trợ lý AI. Cháu cần giúp gì nào?</div>
+  </div>
+
+  <div class="input-area">
+    <select id="model-select">
+      <option value="gemini">Gemini (Google)</option>
+      <option value="openai">ChatGPT (OpenAI)</option>
+    </select>
+    <textarea id="user-input" placeholder="Nhập câu hỏi ở đây..."></textarea>
+    <div class="toolbar">
+      <button id="btn-ocr" title="Đọc chữ từ ảnh (OCR)">📷 OCR</button>
+      <button id="btn-send">Gửi ➢</button>
+    </div>
+  </div>
+
+  <input type="file" id="file-input" style="display: none;" accept="image/*">
+
+  <script src="sidebar.js"></script>
+</body>
+</html>
