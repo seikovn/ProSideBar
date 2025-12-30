@@ -1,1 +1,62 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pro Side AI</title>
+  <link rel="stylesheet" href="sidebar.css">
+  <!-- Tesseract.js CDN for OCR -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
+  <!-- pdf.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+</head>
+<body>
+  <div id="pro-side-ai-root">
+    <header>
+      <h1>Pro Side AI</h1>
+      <div class="header-actions">
+        <button id="btn-settings" title="Settings">⚙️</button>
+        <button id="btn-close" title="Close">✖</button>
+      </div>
+    </header>
 
+    <section id="controls">
+      <label for="ai-tool">Công cụ AI:</label>
+      <select id="ai-tool"></select>
+
+      <textarea id="prompt" placeholder="Nhập câu hỏi hoặc prompt..."></textarea>
+
+      <div class="tool-buttons">
+        <button id="btn-send">Gửi</button>
+        <button id="btn-upload-image">OCR từ ảnh</button>
+        <button id="btn-capture-region">Quét vùng (OCR)</button>
+        <button id="btn-upload-pdf">Chat với PDF</button>
+      </div>
+    </section>
+
+    <section id="response">
+      <div id="response-content"></div>
+    </section>
+
+    <section id="history">
+      <h2>Lịch sử</h2>
+      <ul id="history-list"></ul>
+      <button id="btn-clear-history">Xóa lịch sử</button>
+    </section>
+
+    <!-- modals / hidden inputs -->
+    <input type="file" id="image-input" accept="image/*" style="display:none" />
+    <input type="file" id="pdf-input" accept="application/pdf" style="display:none" />
+
+    <div id="overlay-crop" class="hidden">
+      <canvas id="overlay-canvas"></canvas>
+      <div class="crop-actions">
+        <button id="crop-ok">OK</button>
+        <button id="crop-cancel">Hủy</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="sidebar.js"></script>
+</body>
+</html>
